@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: create admin group
+      group: name='devopsadmin'  state='present'
+    - name: add hari user
+      user:
+        name: hari
+        groups: devopsadmin

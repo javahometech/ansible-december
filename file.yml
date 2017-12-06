@@ -1,0 +1,11 @@
+---
+ - hosts: localhost
+   become: yes
+   tasks:
+     - name: create empty file
+       file:
+         path: /etc/foo.conf
+         owner: ec2-user
+         group: ec2-user
+         mode: 0644
+         state: touch

@@ -1,0 +1,10 @@
+s1 ansible_host=172.31.21.39
+s2 ansible_host=172.31.17.39
+s3 ansible_host=172.31.22.58 ansible_user=ubuntu
+[webservers]
+s1
+s2
+s3
+[webservers:vars]
+ansible_user=ec2-user
+ansible_ssh_private_key_file=/tmp/hari-demo.pem

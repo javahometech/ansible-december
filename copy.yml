@@ -1,0 +1,7 @@
+---
+ - hosts: webservers
+   tasks:
+     - name: copy the file from local to remote
+       copy:
+         src: /etc/foo.conf
+         dest: /tmp/foo.conf
