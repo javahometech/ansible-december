@@ -1,0 +1,14 @@
+---
+- hosts: databases
+  become: yes
+  tasks:
+    - name: install my-sql server
+      apt:
+        name: mysql-server
+        state: present
+    - name: start my-sql server and enable on re-boot
+      service:
+         name: mysql
+         state: started
+         enabled: yes 
+ 

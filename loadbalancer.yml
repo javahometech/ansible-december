@@ -1,0 +1,25 @@
+---
+- hosts: loadbalancers
+  become: yes
+  tasks:
+   - name: Install nginx server
+     apt:
+      name: nginx
+      state: present
+   - name: start and enable nginx server
+     service:
+       name: nginx
+       state: started
+       enabled: yes
+   - name: copy nginx.cfg file to nginx server
+     copy:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+     notify:
+       - restart nginx
+  
+  handlers:  
+   - name: restart nginx
+     service: 
+        name: nginx
+        state: restarted
