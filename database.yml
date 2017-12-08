@@ -1,14 +1,39 @@
 ---
 - hosts: databases
   become: yes
+  vars_files:
+     - vars/db_vars.yml
   tasks:
-    - name: install my-sql server
+    - name: install my-sql and its dependent packages
       apt:
-        name: mysql-server
+        name: "{{item}}"
         state: present
+      with_items:
+         - mysql-server
+         - python-mysqldb
     - name: start my-sql server and enable on re-boot
       service:
          name: mysql
          state: started
          enabled: yes 
- 
+    - name: create database schema
+      mysql_db:
+         name: "{{db_name}}"
+         state: present
+    - name: create database user
+      mysql_user:
+         name: "{{db_user_name}}"
+         password: "{{db_user_password}}"
+         priv: '*.*:ALL'
+         state: present
+    - name: copy devops.sql to db server
+      copy:
+        src: sql/devops.sql
+        dest: /tmp/devops.sql
+    - name: Import data base scripts
+      mysql_db:
+        name: online-shopping-dev
+        state: import
+        target: /tmp/devops.sql
+      tags:
+        - dbimport
